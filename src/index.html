@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeCraft · 多语言编程训练场</title>
+<meta name="description" content="Python / C / C++ / Java / JavaScript 五门语言的中文训练场：分章节精讲、在线敲代码、智能批改、学习计划与每日打卡。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232f6be0'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='bold'>CC</text></svg>">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="icon-btn only-mobile" id="btn-menu" aria-label="打开目录">☰</button>
+  <a class="brand" href="#/home">
+    <span class="brand-mark">CC</span>
+    <span class="brand-text">
+      <strong>CodeCraft</strong>
+      <em id="brand-sub">多语言编程训练场</em>
+    </span>
+  </a>
+
+  <div class="topbar-spacer"></div>
+
+  <div class="top-actions">
+    <button class="lang-pill" id="lang-pill" title="切换学习语言">
+      <span class="lg-ico" id="lang-ico">🐍</span>
+      <span id="lang-name">Python</span>
+      <span class="lg-caret">▾</span>
+    </button>
+    <div class="level-switch" id="level-switch" title="难度决定每天出多少题">
+      <button data-level="easy">轻松</button>
+      <button data-level="normal">标准</button>
+      <button data-level="hard">挑战</button>
+    </div>
+    <a class="streak-pill" id="streak-pill" href="#/calendar" title="连续打卡天数">
+      <span class="flame">🔥</span><b id="streak-num">0</b><span>天</span>
+    </a>
+    <a class="btn btn-primary btn-sm" id="btn-today" href="#/daily">今日一练</a>
+    <button class="icon-btn" id="btn-settings" title="设置与备份">⚙</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <nav id="sidebar-nav"></nav>
+    <div class="sidebar-foot">
+      <div class="mini-progress">
+        <div class="mp-head"><span>总进度</span><b id="mp-text">0%</b></div>
+        <div class="bar"><i id="mp-bar" style="width:0%"></i></div>
+        <div class="mp-sub" id="mp-sub">已完成 0 / 0 个知识点</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="view" id="view">
+    <div class="loading">正在加载课程…</div>
+  </main>
+</div>
+
+<div id="toast-wrap" aria-live="polite"></div>
+<div id="modal-root"></div>
+
+<script>
+/*__DATA__*/
+</script>
+<script>
+/*__APP__*/
+</script>
+
+</body>
+</html>
