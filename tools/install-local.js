@@ -42,7 +42,13 @@ const lnk = build({
   relPath: '..\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe',
   serial: 0xd7bd1205,
 });
-fs.writeFileSync(LNK, lnk);
+try {
+  fs.writeFileSync(LNK, lnk);
+} catch (e) {
+  // 桌面上已存在的 .lnk 偶尔会被资源管理器/杀软短暂占用，先删再写
+  try { fs.unlinkSync(LNK); fs.writeFileSync(LNK, lnk); }
+  catch (e2) { console.error('写入快捷方式失败（文件可能被占用）：', e2.code || e2.message); process.exit(1); }
+}
 
 const meta = parse(LNK);
 console.log('应用目录 :', APP_DIR);
