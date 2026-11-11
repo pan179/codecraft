@@ -13,3 +13,7 @@ data.json
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# 临时凭据文件（绝不可提交）
+.gh*.json
+.git-credentials
