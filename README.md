@@ -4,6 +4,8 @@
 
 Python / C / C++ / Java / JavaScript 五门语言，74 个课时，180 道题，代码可以在页面里直接跑。
 
+**在线直接打开：https://pan179.github.io/codecraft/**
+
 > 双击 `CodeCraft.html` 就能用，不需要装环境、不需要联网注册。全部内容都在一个文件里。
 
 ---
@@ -22,10 +24,11 @@ Python / C / C++ / Java / JavaScript 五门语言，74 个课时，180 道题，
 
 下载 `CodeCraft.html`，双击。任何现代浏览器都行，Windows / macOS / Linux 通吃。
 
-### 方式 C：只看不下载
+### 方式 C：网页版，什么都不装
 
-<!-- 若启用 GitHub Pages，把链接填在这里 -->
-打开网页版（进度独立保存，和本地版不互通）。
+**https://pan179.github.io/codecraft/**
+
+手机、平板、别人的电脑，打开就能练。注意进度是存在浏览器里的，和本地版的进度**不互通**。
 
 ---
 
