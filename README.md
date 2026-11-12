@@ -108,8 +108,13 @@ Python / C / C++ / Java / JavaScript 五门语言，43 章 192 个课时，400 �
 ```bash
 node build.js          # 把 src 打包成单文件，输出 dist/ 和根目录 CodeCraft.html
 node test/verify.js    # 数据与核心逻辑自检（计划 45 例 / 出题 600 例）
+node test/serve.js     # 另开一个终端：起本地静态服务 http://127.0.0.1:8777
 node test/e2e.js       # 真浏览器跑一遍主流程（需本机有 Edge）
 node test/e2e-daily.js # 每日打卡闭环
+node test/check-quiz.js <lang>   # 题库结构自检（id 唯一、答案可选、解析齐全）
+node test/check-code.js          # Python 代码块实跑比对
+node test/check-js.js            # JavaScript 代码块在沙箱里实跑比对
+node test/verify-online.js c,cpp,java --quiz   # 提交 Wandbox 真实编译核对
 ```
 
 源码结构：
