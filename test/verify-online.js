@@ -11,8 +11,11 @@ const SRC = path.join(__dirname, '..', 'src');
 const sandbox = { window: {}, console };
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(SRC, 'js/core.js'), 'utf8'), sandbox);
-['lang-c.js', 'lang-cpp.js', 'lang-java.js'].forEach(f =>
-  vm.runInContext(fs.readFileSync(path.join(SRC, 'data', f), 'utf8'), sandbox));
+['lang-c.js', 'lang-cpp.js', 'lang-java.js'].forEach(f => {
+  const p = path.join(SRC, 'data', f);
+  if (!fs.existsSync(p)) return;
+  vm.runInContext(fs.readFileSync(p, 'utf8'), sandbox);
+});
 
 const LANGS = sandbox.window.LANGS;
 const CORE = sandbox.window.CORE;
@@ -46,9 +49,10 @@ async function runOn(lang, code) {
     const cerr = d.compiler_error || '';
     const out = d.program_output || '';
     const perr = d.program_error || '';
-    return { ok: String(d.status) === '0' && !cerr, out, cerr, perr };
+    const infra = /OCI runtime|Resource temporarily|too many|rate limit/i.test(cerr + perr + text);
+    return { ok: String(d.status) === '0' && !cerr && !infra, out, cerr, perr, retry: infra };
   } catch (e) {
-    return { ok: false, out: '', cerr: '请求失败：' + e.message, perr: '' };
+    return { ok: false, out: '', cerr: '请求失败：' + e.message, perr: '', retry: true };
   } finally {
     clearTimeout(timer);
   }
@@ -56,6 +60,9 @@ async function runOn(lang, code) {
 
 (async function main() {
   const only = process.argv[2] ? process.argv[2].split(',') : ['c', 'cpp', 'java'];
+  const withQuiz = process.argv.includes('--quiz');
+  const onlyArg = process.argv.find(a => a.startsWith('--only='));
+  const filters = onlyArg ? onlyArg.slice(7).split(',').filter(Boolean) : null;
   let fail = 0, pass = 0, skip = 0;
 
   for (const lang of only) {
@@ -68,11 +75,19 @@ async function runOn(lang, code) {
       cases.push({ id: l.id + ' / ' + l.title, code: b.x, out: b.out });
     })));
 
+    if (withQuiz) {
+      [['quiz', L.quiz || []], ['checkin', L.checkin || []]].forEach(([kind, arr]) => arr.forEach(q => {
+        if (q.type !== 'output') return;
+        cases.push({ id: q.id + '（' + kind + '）/' + q.point, code: q.code, out: q.answer });
+      }));
+    }
+
     console.log('\n===== ' + L.name + '：' + cases.length + ' 个示例待核对 =====');
     for (const c of cases) {
+      if (filters && !filters.some(f => c.id.includes(f))) continue;
       let r = await runOn(lang, c.code);
       let tries = 0;
-      while (r.retry && tries < 4) {
+      while (r.retry && tries < 6) {
         tries++;
         await sleep(3000 * tries);
         r = await runOn(lang, c.code);
@@ -86,6 +101,7 @@ async function runOn(lang, code) {
         console.log('  ✗ ' + c.id);
         console.log('     期望: ' + JSON.stringify(c.out));
         console.log('     实际: ' + JSON.stringify(got));
+        if (r.retry) console.log('     （Wandbox 资源繁忙，已重试仍失败）');
         if (r.cerr) console.log('     编译错误: ' + r.cerr.split('\n').slice(0, 4).join(' | '));
         if (r.perr) console.log('     运行错误: ' + r.perr.split('\n').slice(0, 3).join(' | '));
       }

@@ -74,7 +74,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     }))()`);
     console.log('首页:', JSON.stringify(home));
     if (home.hash !== '#/home') errs.push('开始学习后没有跳到首页：' + home.hash);
-    if (home.chapterCount !== 6) errs.push('C 语言章节数不是 6：' + home.chapterCount);
+    if (home.chapterCount !== 8) errs.push('C 语言章节数不是 8：' + home.chapterCount);
     if (home.langName !== 'C') errs.push('顶栏语言没有切换成 C：' + home.langName);
     if (home.viewLen < 500) errs.push('首页内容过少');
     await s.shot(path.join(SHOTS, '04-home.png'), true);
